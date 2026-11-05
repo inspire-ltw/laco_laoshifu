@@ -13,12 +13,17 @@ try {
     $queryFile = [IO.Path]::GetTempFileName()
     try {
         $prompt = @"
-安装路径「$PSScriptRoot」下的 skill。
+安装当前工作目录「.」下的 skill。
 请将该完整目录作为 laco-laoshifu 安装到当前 Lapdex profile 的用户技能目录，保留 SKILL.md 和 references 的相对位置。若已有同名安装，请停止并报告路径，以便用户备份。安装后检查目标的 SKILL.md 和 references/kd/source/README.md，并报告实际结果和目标路径。
 "@
         [IO.File]::WriteAllText($queryFile, $prompt, [Text.UTF8Encoding]::new($false))
-        & $cli.Source chat --oneshot --query-file $queryFile
-        $exitCode = $LASTEXITCODE
+        Push-Location -LiteralPath $PSScriptRoot
+        try {
+            & $cli.Source chat --oneshot --query-file $queryFile
+            $exitCode = $LASTEXITCODE
+        } finally {
+            Pop-Location
+        }
         if ($exitCode -eq 0) {
             Write-Host 'Lapdex CLI 已退出。请查看上方安装结果，并在 Lapdex 技能列表中确认。'
         }

@@ -2,7 +2,7 @@
 
 日常安装、启用、文件任务与排障请看 [Lapdex 用户手册](usage.md)。本页面向需要使用源码安装器、重新打包或核对适配依据的维护者。
 
-v0.2.3 将“拉可老师傅”的六类业务工作流、私有记忆工作流、本地知识库、Office 工具和模板打包为一个独立的 `laco-laoshifu` 技能目录。Lapdex 通过一个入口按需读取业务工作流。
+v0.2.4 将“拉可老师傅”的六类业务工作流、私有记忆工作流、本地知识库、Office 工具和模板打包为一个独立的 `laco-laoshifu` 技能目录。Lapdex 通过一个入口按需读取业务工作流。
 
 适配原理、目录映射、加载器依据及维护流程见 [拉可老师傅适配 Lapdex 的设计与实施](lapdex-adaptation.md)。
 
@@ -10,7 +10,7 @@ v0.2.3 将“拉可老师傅”的六类业务工作流、私有记忆工作流�
 
 ## 获取与安装
 
-本仓库 `dist/` 提供 `laco-laoshifu-lapdex-0.2.3.zip` 及同名 `.zip.sha256`。ZIP 内保留顶层 `laco-laoshifu/`：
+本仓库 `dist/` 提供 `laco-laoshifu-lapdex-0.2.4.zip` 及同名 `.zip.sha256`。ZIP 内保留顶层 `laco-laoshifu/`：
 
 ```text
 ~/.lapdex/skills/laco-laoshifu/
@@ -28,9 +28,9 @@ v0.2.3 将“拉可老师傅”的六类业务工作流、私有记忆工作流�
 也可以在仓库根目录用 Python 3.10+ 安装：
 
 ```powershell
-python scripts/package_lapdex.py --check dist/laco-laoshifu-lapdex-0.2.3.zip
-python scripts/package_lapdex.py --install dist/laco-laoshifu-lapdex-0.2.3.zip --dry-run
-python scripts/package_lapdex.py --install dist/laco-laoshifu-lapdex-0.2.3.zip
+python scripts/package_lapdex.py --check dist/laco-laoshifu-lapdex-0.2.4.zip
+python scripts/package_lapdex.py --install dist/laco-laoshifu-lapdex-0.2.4.zip --dry-run
+python scripts/package_lapdex.py --install dist/laco-laoshifu-lapdex-0.2.4.zip
 ```
 
 自定义技能目录时添加 `--skills-dir "目标技能目录"`。安装器校验归档完整性和路径后安装；目标目录存在时拒绝覆盖。用户可能已经在技能内维护了知识库，升级前应备份旧目录并审阅知识差异，再将旧目录另行保存后安装新包。
@@ -55,13 +55,13 @@ python scripts/package_lapdex.py --install dist/laco-laoshifu-lapdex-0.2.3.zip
 | Office 原生规范化 | Windows、Python 3.10+、PowerShell 和相应 Microsoft Office 应用 |
 | Excel/Word/PPT 专业内容核对 | 按对应工作流使用本地知识和用户材料；复杂版式需要视觉复核 |
 
-不依赖 Codex 插件、Codex 缓存中的 Python 或 `.agents/skills` 联接。原始资料清单中的旧机器路径保留为出处记录，脚本从自身安装位置定位本包资源。知识维护写在本地安装副本中，不会自动同步或推送回本仓库。
+不依赖 Codex 插件、Codex 缓存中的 Python 或 `.agents/skills` 联接。原始资料清单使用文件名和哈希记录出处，脚本从自身安装位置定位本包资源。知识维护写在本地安装副本中，不会自动同步或推送回本仓库。
 
 ## 从源码重新打包
 
 ```powershell
 python scripts/package_lapdex.py
-python scripts/package_lapdex.py --check dist/laco-laoshifu-lapdex-0.2.3.zip
+python scripts/package_lapdex.py --check dist/laco-laoshifu-lapdex-0.2.4.zip
 python -B -m unittest discover -s tests -v
 python -B -m unittest discover -s source/tests -v
 ```
@@ -86,4 +86,4 @@ python -B -m unittest discover -s source/tests -v
 
 ## 发布前隐私检查
 
-构建后执行 `python scripts/check_privacy.py` 和 `python scripts/check_privacy.py dist/laco-laoshifu-lapdex-0.2.3.zip`。检查涵盖跟踪资源、ZIP 内部资源、本机路径、文档作者和外部模板关系。来源清单只记录来源标识和文件名，快照导入不会把原始目录写入仓库。外部输入输出使用用户指定或运行时解析的绝对路径。
+构建后执行 `python scripts/check_privacy.py` 和 `python scripts/check_privacy.py dist/laco-laoshifu-lapdex-0.2.4.zip`。检查涵盖跟踪资源、ZIP 内部资源、本机路径、文档作者和外部模板关系。来源清单只记录来源标识和文件名，快照导入不会把原始目录写入仓库。包内资源相对技能安装目录定位。外部输入输出的相对路径以用户明确的工作目录为基准。

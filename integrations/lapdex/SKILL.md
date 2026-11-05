@@ -2,7 +2,7 @@
 name: laco-laoshifu
 description: 检索光伏工艺与行业简称，辅助数据、技术文档和程序工作，规范化拉普拉斯 Office 文档，并按授权管理本机私有记忆（爱学习）.
 metadata:
-  package_version: "0.2.3"
+  package_version: "0.2.4"
   lapdex:
     tags: [photovoltaics, topcon, kd, laplace, knowledge, office, chinese]
 ---
@@ -17,7 +17,7 @@ metadata:
 
 用 `read_file` 先读取随包 [工作约定](references/kd/AGENTS.md) 和 [知识库入口](references/kd/source/README.md)，再按下表读取对应工作流。它们是本插件内部资源，**不需要 Lapdex 单独发现或安装子技能**。所有相对路径均从它们各自文件所在位置解析。
 
-业务资源根的 `source/manifest.json` 以文件名和哈希记录来源。证据中的 `source_id` 是外部原文标识，不能作为文件路径执行或读取。包内相对路径从对应文件所在位置解析，须保持在本技能安装目录内。输入、输出和原始资料位于包外时，使用用户明确提供或运行时解析的绝对路径。
+业务资源根的 `source/manifest.json` 以文件名和哈希记录来源。证据中的 `source_id` 是外部原文标识，不能作为文件路径执行或读取。包内相对路径从对应文件所在位置解析，须保持在本技能安装目录内。包外输入、输出和原始资料的相对路径以用户明确的工作目录为基准。工作目录不明确时先确认，再解析路径。
 
 ## 爱学习
 
@@ -38,17 +38,17 @@ metadata:
 
 ## 查询与执行
 
-检索工具只用 Python 标准库，需要 Python 3.10+。通过 `terminal` 使用当前环境中实际可用且版本符合要求的 `python`、`python3` 或 `py -3`，将下列 `插件根` 替换为本技能的绝对安装路径：
+检索工具只用 Python 标准库，需要 Python 3.10+。通过 `terminal` 使用当前环境中实际可用且版本符合要求的 `python`、`python3` 或 `py -3`，先将终端工作目录切换到本技能实际安装目录，再使用以下相对路径：
 
 ```text
-python "插件根/references/kd/source/tools/kb.py" abbr "硼扩散" --json
-python "插件根/references/kd/source/tools/kb.py" search "硼扩散 炉管" --limit 5
-python "插件根/references/kd/source/tools/kb.py" verify
+python "references/kd/source/tools/kb.py" abbr "硼扩散" --json
+python "references/kd/source/tools/kb.py" search "硼扩散 炉管" --limit 5
+python "references/kd/source/tools/kb.py" verify
 ```
 
-脚本按自身真实路径定位资源，可从任意工作目录执行。Python 不可用时，直接读取业务资源根中的 `source/glossary.json`、`source/knowledge/` 及原文相关章节，可用 `search_files` 定位关键词，继续能完成的分析；说明尚未执行工具，不默认安装运行时或其他软件。检索命中后打开原文上下文，引用文件和章节或行号。
+脚本按自身真实路径定位资源。上述相对命令从技能安装目录执行；也可从运行环境解析完整脚本路径后调用。Python 不可用时，直接读取业务资源根中的 `source/glossary.json`、`source/knowledge/` 及原文相关章节，可用 `search_files` 定位关键词，继续能完成的分析；说明尚未执行工具，不默认安装运行时或其他软件。检索命中后打开原文上下文，引用文件和章节或行号。
 
-Office 规范化先通过 `terminal` 运行 `python "插件根/references/kd/skills/laplace-office-standardize/scripts/office.py" doctor`。原生处理还需要 Windows、PowerShell 及对应的 Microsoft Office 应用；先核实实际依赖，再执行 `apply`。输入文件保持原样，输出到用户工作目录中的新目录。内置模板和公司样式目前是草案，不能标作正式批准标准；只在实际检查输出后声明完成保真或版式验证。
+Office 规范化先通过 `terminal` 运行 `python "references/kd/skills/laplace-office-standardize/scripts/office.py" doctor`。原生处理还需要 Windows、PowerShell 及对应的 Microsoft Office 应用；先核实实际依赖，再执行 `apply`。输入文件保持原样，输出到用户工作目录中的新目录。内置模板和公司样式目前是草案，不能标作正式批准标准；只在实际检查输出后声明完成保真或版式验证。
 
 ## 判断与维护边界
 
