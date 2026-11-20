@@ -4,26 +4,36 @@
 
 建立日期：2026-10-28（Asia/Shanghai）。这是参考资料整理与工作方法，不是已核准的工厂规范，也未对原文外部引用逐条重新核验。
 
-## 先读什么
+## 按知识体系查阅
+
+从[光伏知识体系](knowledge/pv-knowledge-map.md)进入，沿材料与界面、电池结构、制造与设备、测试与诊断、组件与产业化、系统与运维查找。体系图提供 TOPCon 批次追溯、电性能排查和钙钛矿叠层放大的跨主题入口。
+
+## 常用入口
 
 | 当前问题 | 入口 | 何时回到原文 |
 |---|---|---|
 | 工艺路线、上下游、不同电池技术 | [工艺地图](knowledge/process-map.md) | 确认路线顺序、技术结构和参考数值 |
 | 炉管、舟、温区、真空、气路、配方步骤 | [设备知识](knowledge/equipment.md) | 对比设备参数、步骤和测量上下文 |
 | IV、EL、PL、寿命、材料、质量关联 | [质量与材料](knowledge/quality-and-materials.md) | 检查测试条件、指标定义和缺陷证据 |
+| 材料吸光、复合、界面和电池结构 | [光伏材料、界面与器件结构](knowledge/pv-device-physics.md) | 核对功能层、接触类型与器件条件 |
+| 扩散、刻蚀、薄膜和 TOPCon 工序变体 | [晶硅电池制造工艺原理](knowledge/pv-device-and-manufacturing.md) | 核对工步目的、膜层位置和路线版本 |
+| 钙钛矿或叠层的放大制造、封装、稳定性及成本 | [钙钛矿与叠层产业化](knowledge/perovskite-scale-up.md) | 核对器件面积、测试协议和成本假设 |
+| 组件发电量、系统性能及并网维护 | [光伏系统性能与维护](knowledge/pv-system-and-maintenance.md) | 核对计量层级、标准版次及适用范围 |
 | 中文简称、英文缩写、数据集代号与多别名 | [名称对照表](knowledge/name-crosswalk.md)、[术语表](glossary.json)，或 `abbr` 命令 | 确认概念、状态、适用范围与来源性质 |
 | 同一缩写有多种中文含义、来源定义冲突 | [名称消歧工作流](workflows/name-disambiguation.md) | 结合当前上下文判断；仍不能确定时向用户确认 |
 | OEE、状态、配方和原文有歧义的数值 | [缺口与冲突](knowledge/gaps-and-conflicts.md) | 决定哪些结论可以给出、哪些需要确认 |
+| OEE 公式、班次、批次计量与汇总 | [设备综合效率与数据口径](knowledge/oee-measurement.md) | 核对所采纳的指标定义与现场数据契约 |
 | 表格、SQL、日志、时间序列、批次分析 | [数据工作流](workflows/data-analysis.md) | 使用真实字段前确认字典和口径 |
 | 技术说明、报告、需求、SOP 草稿 | [文档工作流](workflows/document-writing.md) | 重要工艺主张给出文件与章节 |
 | Word/Excel/PPT 模板、样式、公司 Logo 与批量规范化 | [laplace-office-standardize](../skills/laplace-office-standardize/SKILL.md) | 区分模板草案与正式版本，检查输出内容和版面 |
 | 采集、清洗、指标、接口、程序修改 | [程序工作流](workflows/software-development.md) | 为实现选择上下文并确定有意义的边界测试 |
 
-首次接触领域可先读 [原始总目录](references/kd/00_index.md)，之后只加载当前任务相关章节。[术语表](glossary.json) 是概念与多简称的唯一主表，[名称对照表](knowledge/name-crosswalk.md) 由它生成；[catalog.json](catalog.json) 是机器可读文档目录、章节行号和文件哈希。
+需要追溯出处时，可查 [KD 原始总目录](references/kd/00_index.md)和[光伏图书与标准来源登记](references/photovoltaics/README.md)。[术语表](glossary.json) 是概念与多简称的唯一主表，[名称对照表](knowledge/name-crosswalk.md) 由它生成。[catalog.json](catalog.json) 是机器可读文档目录，记录章节行号和文件哈希。
 
 ## 资料层次与可信范围
 
 - `references/kd/`：原样复制的参考资料；它描述工艺背景和典型条件，不能自动代表现场标准。
+- [光伏图书与标准来源登记](references/photovoltaics/README.md)：提供题名、版本和章节。主题知识页及公开核查结论纳入本地搜索。
 - `knowledge/`：基于原文整理的领域地图、解释和冲突清单。引用用于回查；建议与待确认项有明确标记。
 - `evidence/`：数据集研究证据，保留目录、字段或样例的具体语境；局部观察不等于经确认的全厂定义。
 - `workflows/`：本次建立的 Agent 工作建议，指导如何应用领域知识，不是原文宣称的工厂制度。

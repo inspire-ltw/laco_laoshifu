@@ -6,9 +6,9 @@
       "path": "README.md",
       "category": "knowledge",
       "title": "KD 工作知识库",
-      "sha256": "727f22747d609f2a6c698b487154b70825c458930958d83370c9913021f52bdd",
-      "bytes": 11728,
-      "line_count": 123,
+      "sha256": "b806e379d3d41a75cd6cb66a43f45df1aa014ef000556bbc14a3f0b712e996b9",
+      "bytes": 13134,
+      "line_count": 133,
       "sections": [
         {
           "line": 1,
@@ -18,30 +18,35 @@
         {
           "line": 7,
           "level": 2,
-          "title": "先读什么"
+          "title": "按知识体系查阅"
         },
         {
-          "line": 24,
+          "line": 11,
+          "level": 2,
+          "title": "常用入口"
+        },
+        {
+          "line": 33,
           "level": 2,
           "title": "资料层次与可信范围"
         },
         {
-          "line": 39,
+          "line": 49,
           "level": 2,
           "title": "检索与校验"
         },
         {
-          "line": 63,
+          "line": 73,
           "level": 2,
           "title": "常用简称、缩写与数据集代号"
         },
         {
-          "line": 96,
+          "line": 106,
           "level": 2,
           "title": "使用 skills"
         },
         {
-          "line": 111,
+          "line": 121,
           "level": 2,
           "title": "更新资料"
         }
@@ -102,8 +107,8 @@
       "path": "knowledge/equipment.md",
       "category": "knowledge",
       "title": "管式设备、信号与解释边界",
-      "sha256": "4719833bde39d177a4ff7349dcbd3f11a0c068a0c70a9e6ce648251e7677bf65",
-      "bytes": 6790,
+      "sha256": "0a94aaca360d373013be8492720bc0a0e928f57113090b4742ad4daee53f3cc2",
+      "bytes": 6923,
       "line_count": 71,
       "sections": [
         {
@@ -150,8 +155,8 @@
       "path": "knowledge/gaps-and-conflicts.md",
       "category": "knowledge",
       "title": "知识缺口与原文冲突",
-      "sha256": "5a4a6d6c0e921cf71e80b384d7df394f5b5a845d418b2e29dc6dc71f2e115a46",
-      "bytes": 7365,
+      "sha256": "2bb91cd850cee7adb13041595fd412f626c7ea04ae17b36033fbef592bb1061e",
+      "bytes": 10654,
       "line_count": 46,
       "sections": [
         {
@@ -232,13 +237,74 @@
       "source_status": null
     },
     {
+      "id": "knowledge/oee-measurement.md",
+      "path": "knowledge/oee-measurement.md",
+      "category": "knowledge",
+      "title": "设备综合效率与数据口径",
+      "sha256": "c82ce39eb5730ad56666b0ba6b0ec07f91f1f16d46485b76d1cc4a338f55d25a",
+      "bytes": 2341,
+      "line_count": 27,
+      "sections": [
+        {
+          "line": 1,
+          "level": 1,
+          "title": "设备综合效率与数据口径"
+        },
+        {
+          "line": 5,
+          "level": 2,
+          "title": "指标与适用范围"
+        },
+        {
+          "line": 18,
+          "level": 2,
+          "title": "现场数据与核验"
+        }
+      ],
+      "evidence": "curated_guidance",
+      "source_status": null
+    },
+    {
+      "id": "knowledge/perovskite-scale-up.md",
+      "path": "knowledge/perovskite-scale-up.md",
+      "category": "knowledge",
+      "title": "钙钛矿与叠层产业化",
+      "sha256": "7863fe770904acfb01330bd448302f1efaad5ab410e7744e9ecbb9c423269e5b",
+      "bytes": 2864,
+      "line_count": 24,
+      "sections": [
+        {
+          "line": 1,
+          "level": 1,
+          "title": "钙钛矿与叠层产业化"
+        },
+        {
+          "line": 5,
+          "level": 2,
+          "title": "封装、铅管理与光子管理"
+        },
+        {
+          "line": 10,
+          "level": 2,
+          "title": "放大制造：面积、均匀性、重复性与节拍"
+        },
+        {
+          "line": 18,
+          "level": 2,
+          "title": "商业化证据：寿命、成本和供应链"
+        }
+      ],
+      "evidence": "curated_guidance",
+      "source_status": null
+    },
+    {
       "id": "knowledge/process-map.md",
       "path": "knowledge/process-map.md",
       "category": "knowledge",
       "title": "光伏制造工艺与技术路线",
-      "sha256": "ae860600c4ec010098530556d0ce2f8f05e34b4536b4b13094df072b526dd588",
-      "bytes": 7266,
-      "line_count": 76,
+      "sha256": "f75a6b4533f3346b21d23190fe8fefe04e28ba00b1b0668cf59edf8829db4158",
+      "bytes": 7868,
+      "line_count": 80,
       "sections": [
         {
           "line": 1,
@@ -256,24 +322,146 @@
           "title": "2. 电池路线决定工序含义"
         },
         {
-          "line": 28,
+          "line": 30,
           "level": 2,
           "title": "3. TOPCon的工序检索图"
         },
         {
-          "line": 53,
+          "line": 57,
           "level": 2,
           "title": "4. 组件流程与检测位置"
         },
         {
-          "line": 59,
+          "line": 63,
           "level": 2,
           "title": "5. 原文冲突与适用性限制"
         },
         {
-          "line": 69,
+          "line": 73,
           "level": 2,
           "title": "6. 任务开始时的最小业务上下文"
+        }
+      ],
+      "evidence": "curated_guidance",
+      "source_status": null
+    },
+    {
+      "id": "knowledge/pv-device-and-manufacturing.md",
+      "path": "knowledge/pv-device-and-manufacturing.md",
+      "category": "knowledge",
+      "title": "晶硅电池制造工艺原理",
+      "sha256": "1d1c2f15083f1ec06ff6b395a45c360bc95401d4e8a07f3bc768f637cd7e6210",
+      "bytes": 3326,
+      "line_count": 27,
+      "sections": [
+        {
+          "line": 1,
+          "level": 1,
+          "title": "晶硅电池制造工艺原理"
+        },
+        {
+          "line": 5,
+          "level": 2,
+          "title": "晶硅制造工序与质量线索"
+        },
+        {
+          "line": 18,
+          "level": 2,
+          "title": "TOPCon：把发射极和钝化接触对应到层与工序"
+        },
+        {
+          "line": 23,
+          "level": 2,
+          "title": "硅异质结：层制备与工序关联"
+        }
+      ],
+      "evidence": "curated_guidance",
+      "source_status": null
+    },
+    {
+      "id": "knowledge/pv-device-physics.md",
+      "path": "knowledge/pv-device-physics.md",
+      "category": "knowledge",
+      "title": "光伏材料、界面与器件结构",
+      "sha256": "c42894dd475c6c17a2be67ed92a04b542954f334474d2d6dc8c2b07f3599ff3c",
+      "bytes": 3239,
+      "line_count": 27,
+      "sections": [
+        {
+          "line": 1,
+          "level": 1,
+          "title": "光伏材料、界面与器件结构"
+        },
+        {
+          "line": 5,
+          "level": 2,
+          "title": "吸收、复合与载流子输运"
+        },
+        {
+          "line": 14,
+          "level": 2,
+          "title": "电池结构、功能层与接触"
+        }
+      ],
+      "evidence": "curated_guidance",
+      "source_status": null
+    },
+    {
+      "id": "knowledge/pv-knowledge-map.md",
+      "path": "knowledge/pv-knowledge-map.md",
+      "category": "knowledge",
+      "title": "光伏知识体系",
+      "sha256": "164d6a1b03da7b044b1fce380fef269bbfdcaf231fee4e3385979b50bca6d8d8",
+      "bytes": 3779,
+      "line_count": 27,
+      "sections": [
+        {
+          "line": 1,
+          "level": 1,
+          "title": "光伏知识体系"
+        },
+        {
+          "line": 5,
+          "level": 2,
+          "title": "材料、器件与制造"
+        },
+        {
+          "line": 13,
+          "level": 2,
+          "title": "验证、量产与应用"
+        },
+        {
+          "line": 21,
+          "level": 2,
+          "title": "按问题串联知识"
+        }
+      ],
+      "evidence": "curated_guidance",
+      "source_status": null
+    },
+    {
+      "id": "knowledge/pv-system-and-maintenance.md",
+      "path": "knowledge/pv-system-and-maintenance.md",
+      "category": "knowledge",
+      "title": "光伏系统性能与维护",
+      "sha256": "7c47e3d752612481856eef16c16c51419b0c52e37709d686adfa221999d20e56",
+      "bytes": 2627,
+      "line_count": 28,
+      "sections": [
+        {
+          "line": 1,
+          "level": 1,
+          "title": "光伏系统性能与维护"
+        },
+        {
+          "line": 5,
+          "level": 2,
+          "title": "从辐照输入到系统发电量"
+        },
+        {
+          "line": 16,
+          "level": 2,
+          "title": "IEC 62446-2:2020：并网系统维护的查阅位置"
         }
       ],
       "evidence": "curated_guidance",
@@ -284,9 +472,9 @@
       "path": "knowledge/quality-and-materials.md",
       "category": "knowledge",
       "title": "测试质量、关键材料与指标解释",
-      "sha256": "1cdd3db34ac61eb9a59675ec6efa2598a91dba93063d8a7b37e5931f9a386b34",
-      "bytes": 7478,
-      "line_count": 74,
+      "sha256": "cc33de3da4e01286566b526d01b36b28ab7f2ec68a936167bf17dcac2cfd87d4",
+      "bytes": 10417,
+      "line_count": 103,
       "sections": [
         {
           "line": 1,
@@ -305,21 +493,31 @@
         },
         {
           "line": 38,
+          "level": 3,
+          "title": "电性能和可靠性诊断"
+        },
+        {
+          "line": 52,
+          "level": 3,
+          "title": "短路电流密度的光谱积分"
+        },
+        {
+          "line": 67,
           "level": 2,
           "title": "3. 质量数据关联方式"
         },
         {
-          "line": 49,
+          "line": 78,
           "level": 2,
           "title": "4. 材料与工艺适配"
         },
         {
-          "line": 61,
+          "line": 90,
           "level": 2,
           "title": "5. 需要保留的原文问题"
         },
         {
-          "line": 72,
+          "line": 101,
           "level": 2,
           "title": "6. 现场知识补充入口"
         }
@@ -1986,6 +2184,24 @@
       "source_status": "present"
     },
     {
+      "id": "references/photovoltaics/README.md",
+      "path": "references/photovoltaics/README.md",
+      "category": "references",
+      "title": "光伏图书与标准来源登记",
+      "sha256": "98d12015bc608c527ff1d476f636f12ff5a119bfb8ef78fe1b4454a297d53217",
+      "bytes": 2172,
+      "line_count": 17,
+      "sections": [
+        {
+          "line": 1,
+          "level": 1,
+          "title": "光伏图书与标准来源登记"
+        }
+      ],
+      "evidence": "curated_guidance",
+      "source_status": null
+    },
+    {
       "id": "templates/analysis-report.md",
       "path": "templates/analysis-report.md",
       "category": "templates",
@@ -2132,8 +2348,8 @@
       "path": "workflows/data-analysis.md",
       "category": "workflows",
       "title": "数据处理与分析工作流",
-      "sha256": "9e0e487c2b099aa3e4db8f6bdbca42460cbbd28fb2fe6d819bc3cf637ea149f3",
-      "bytes": 6517,
+      "sha256": "ba01d69a2e6b7746157880fd5263447a2bd11a347880fe3ee6cad8780604141e",
+      "bytes": 6620,
       "line_count": 70,
       "sections": [
         {

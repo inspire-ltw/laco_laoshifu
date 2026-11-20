@@ -159,7 +159,7 @@ python scripts/package_lapdex.py --install dist/laco-laoshifu-lapdex-0.2.4.zip
 | **复用工作约定** | 经授权保存和复用本机私有记忆，按项目或数据源范围读取 | [源码用法](docs/maintenance.md#memory) · [版本范围](docs/usage.md#memory) |
 | **积累团队知识** | 用户要求维护时，整理来源、版本和适用范围，更新术语与知识索引 | [知识维护工作流](skills/kd-knowledge-maintenance/SKILL.md) |
 
-Lapdex 通过一个 `laco-laoshifu` 入口，按任务调用六类业务工作流和随包工具。数据、文档与程序任务由助手按工作流执行；Office 已有独立批量脚本。知识以光伏工艺和管式设备为起点，包含 16 份原始工艺参考快照，以及术语、数据集说明和冲突记录。
+Lapdex 通过一个 `laco-laoshifu` 入口，按任务调用六类业务工作流和随包工具。数据、文档与程序任务由助手按工作流执行；Office 已有独立批量脚本。源码中的[光伏知识体系](source/knowledge/pv-knowledge-map.md)串联材料与器件、制造与设备、测试与诊断、组件产业化及系统运维，并提供[工艺冲突核查与现场确认清单](source/knowledge/gaps-and-conflicts.md)。知识库保留 16 份原始工艺参考快照及术语、数据集说明。
 
 **使用时需要了解的范围：**
 
