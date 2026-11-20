@@ -6,8 +6,8 @@
       "path": "README.md",
       "category": "knowledge",
       "title": "KD 工作知识库",
-      "sha256": "b806e379d3d41a75cd6cb66a43f45df1aa014ef000556bbc14a3f0b712e996b9",
-      "bytes": 13134,
+      "sha256": "a914b70624a6ce1390d21417b960e50a1c76915e9cccef0259a2affc97acd445",
+      "bytes": 13184,
       "line_count": 133,
       "sections": [
         {
@@ -107,9 +107,9 @@
       "path": "knowledge/equipment.md",
       "category": "knowledge",
       "title": "管式设备、信号与解释边界",
-      "sha256": "0a94aaca360d373013be8492720bc0a0e928f57113090b4742ad4daee53f3cc2",
-      "bytes": 6923,
-      "line_count": 71,
+      "sha256": "b86452d3fa45476526740676668f5dc19e20a3b6db01e122f92f921c317246af",
+      "bytes": 21306,
+      "line_count": 140,
       "sections": [
         {
           "line": 1,
@@ -144,7 +144,47 @@
         {
           "line": 67,
           "level": 2,
-          "title": "6. 原资料尚未提供的现场约束"
+          "title": "6. 炉管、载具及维护的公开设计案例"
+        },
+        {
+          "line": 78,
+          "level": 3,
+          "title": "载具、热工与维护的取证"
+        },
+        {
+          "line": 93,
+          "level": 3,
+          "title": "硅片搬运、异质结镀膜及多前驱体气路"
+        },
+        {
+          "line": 101,
+          "level": 3,
+          "title": "膜厚均匀性的三类控制位置"
+        },
+        {
+          "line": 113,
+          "level": 3,
+          "title": "热处理测点异常与真实温差"
+        },
+        {
+          "line": 119,
+          "level": 3,
+          "title": "进炉舟桨的平移与偏角"
+        },
+        {
+          "line": 123,
+          "level": 3,
+          "title": "舟、管壁和排气的维护机制"
+        },
+        {
+          "line": 132,
+          "level": 3,
+          "title": "烘舟等待与炉内处理的分段计时"
+        },
+        {
+          "line": 136,
+          "level": 2,
+          "title": "7. 原资料尚未提供的现场约束"
         }
       ],
       "evidence": "curated_guidance",
@@ -155,9 +195,9 @@
       "path": "knowledge/gaps-and-conflicts.md",
       "category": "knowledge",
       "title": "知识缺口与原文冲突",
-      "sha256": "2bb91cd850cee7adb13041595fd412f626c7ea04ae17b36033fbef592bb1061e",
-      "bytes": 10654,
-      "line_count": 46,
+      "sha256": "484664c1859e383a5ae0d1ea3dbe917be10462042d9da5263cc439b05dafcd20",
+      "bytes": 12790,
+      "line_count": 54,
       "sections": [
         {
           "line": 1,
@@ -170,14 +210,32 @@
           "title": "已发现的差异与歧义"
         },
         {
-          "line": 22,
+          "line": 24,
           "level": 2,
           "title": "缺少的现场知识"
         },
         {
-          "line": 40,
+          "line": 42,
           "level": 2,
           "title": "时效与证据边界"
+        }
+      ],
+      "evidence": "curated_guidance",
+      "source_status": null
+    },
+    {
+      "id": "knowledge/knowledge-tree.md",
+      "path": "knowledge/knowledge-tree.md",
+      "category": "knowledge",
+      "title": "KD 知识体系树",
+      "sha256": "cebbc77c9e6d74784a259e0c65bbc25d546bc3d30db6b9b8dee0e676de5a5349",
+      "bytes": 11419,
+      "line_count": 53,
+      "sections": [
+        {
+          "line": 1,
+          "level": 1,
+          "title": "KD 知识体系树"
         }
       ],
       "evidence": "curated_guidance",
@@ -241,9 +299,9 @@
       "path": "knowledge/oee-measurement.md",
       "category": "knowledge",
       "title": "设备综合效率与数据口径",
-      "sha256": "c82ce39eb5730ad56666b0ba6b0ec07f91f1f16d46485b76d1cc4a338f55d25a",
-      "bytes": 2341,
-      "line_count": 27,
+      "sha256": "66eca298b1caecd1e6ec65f978be59963f743974088b18437b63e479ddb65767",
+      "bytes": 4567,
+      "line_count": 40,
       "sections": [
         {
           "line": 1,
@@ -259,6 +317,21 @@
           "line": 18,
           "level": 2,
           "title": "现场数据与核验"
+        },
+        {
+          "line": 29,
+          "level": 2,
+          "title": "公开设备运维与工艺数据案例"
+        },
+        {
+          "line": 34,
+          "level": 3,
+          "title": "加热与真空健康评估的输入和旁证"
+        },
+        {
+          "line": 38,
+          "level": 3,
+          "title": "代理模型推荐及实测迭代"
         }
       ],
       "evidence": "curated_guidance",
@@ -269,9 +342,9 @@
       "path": "knowledge/perovskite-scale-up.md",
       "category": "knowledge",
       "title": "钙钛矿与叠层产业化",
-      "sha256": "7863fe770904acfb01330bd448302f1efaad5ab410e7744e9ecbb9c423269e5b",
-      "bytes": 2864,
-      "line_count": 24,
+      "sha256": "bef66f88a46627474c6595224a8462bf1be164706e0d9ec7b820e22610e28d4c",
+      "bytes": 4089,
+      "line_count": 30,
       "sections": [
         {
           "line": 1,
@@ -289,7 +362,12 @@
           "title": "放大制造：面积、均匀性、重复性与节拍"
         },
         {
-          "line": 18,
+          "line": 12,
+          "level": 3,
+          "title": "多层真空集成与液相连续布膜"
+        },
+        {
+          "line": 24,
           "level": 2,
           "title": "商业化证据：寿命、成本和供应链"
         }
@@ -302,9 +380,9 @@
       "path": "knowledge/process-map.md",
       "category": "knowledge",
       "title": "光伏制造工艺与技术路线",
-      "sha256": "f75a6b4533f3346b21d23190fe8fefe04e28ba00b1b0668cf59edf8829db4158",
-      "bytes": 7868,
-      "line_count": 80,
+      "sha256": "9579581d1d5cdcc3db1feebc107db768ac3bf5c4b5cb6f2342ed5db5f0c40695",
+      "bytes": 11315,
+      "line_count": 97,
       "sections": [
         {
           "line": 1,
@@ -327,17 +405,22 @@
           "title": "3. TOPCon的工序检索图"
         },
         {
-          "line": 57,
+          "line": 59,
           "level": 2,
           "title": "4. 组件流程与检测位置"
         },
         {
-          "line": 63,
+          "line": 65,
+          "level": 3,
+          "title": "半片切割、断面钝化与装载"
+        },
+        {
+          "line": 80,
           "level": 2,
           "title": "5. 原文冲突与适用性限制"
         },
         {
-          "line": 73,
+          "line": 90,
           "level": 2,
           "title": "6. 任务开始时的最小业务上下文"
         }
@@ -350,9 +433,9 @@
       "path": "knowledge/pv-device-and-manufacturing.md",
       "category": "knowledge",
       "title": "晶硅电池制造工艺原理",
-      "sha256": "1d1c2f15083f1ec06ff6b395a45c360bc95401d4e8a07f3bc768f637cd7e6210",
-      "bytes": 3326,
-      "line_count": 27,
+      "sha256": "476ed148627dba745d96ed019d248a362909dba0b2da78300ca8c13e10916dc2",
+      "bytes": 7359,
+      "line_count": 46,
       "sections": [
         {
           "line": 1,
@@ -370,9 +453,19 @@
           "title": "TOPCon：把发射极和钝化接触对应到层与工序"
         },
         {
-          "line": 23,
+          "line": 25,
+          "level": 3,
+          "title": "硼发射极与低压沉积中的工艺变量"
+        },
+        {
+          "line": 30,
           "level": 2,
           "title": "硅异质结：层制备与工序关联"
+        },
+        {
+          "line": 34,
+          "level": 2,
+          "title": "硼源的用途、沉积阶段与金属化"
         }
       ],
       "evidence": "curated_guidance",
@@ -383,9 +476,9 @@
       "path": "knowledge/pv-device-physics.md",
       "category": "knowledge",
       "title": "光伏材料、界面与器件结构",
-      "sha256": "c42894dd475c6c17a2be67ed92a04b542954f334474d2d6dc8c2b07f3599ff3c",
-      "bytes": 3239,
-      "line_count": 27,
+      "sha256": "2b17d31c819f340bc7016b7171786d693c2f3eb7d2416b9400d1f80a719735e0",
+      "bytes": 7267,
+      "line_count": 48,
       "sections": [
         {
           "line": 1,
@@ -401,6 +494,16 @@
           "line": 14,
           "level": 2,
           "title": "电池结构、功能层与接触"
+        },
+        {
+          "line": 25,
+          "level": 3,
+          "title": "背接触的局域掺杂与极性隔离"
+        },
+        {
+          "line": 37,
+          "level": 3,
+          "title": "背接触极区、隔离区与掩膜开窗"
         }
       ],
       "evidence": "curated_guidance",
@@ -411,9 +514,9 @@
       "path": "knowledge/pv-knowledge-map.md",
       "category": "knowledge",
       "title": "光伏知识体系",
-      "sha256": "164d6a1b03da7b044b1fce380fef269bbfdcaf231fee4e3385979b50bca6d8d8",
-      "bytes": 3779,
-      "line_count": 27,
+      "sha256": "0333847e9678a235a05017ea743d15b5a0de092f11b809c734664c44d0b05480",
+      "bytes": 5282,
+      "line_count": 32,
       "sections": [
         {
           "line": 1,
@@ -472,9 +575,9 @@
       "path": "knowledge/quality-and-materials.md",
       "category": "knowledge",
       "title": "测试质量、关键材料与指标解释",
-      "sha256": "cc33de3da4e01286566b526d01b36b28ab7f2ec68a936167bf17dcac2cfd87d4",
-      "bytes": 10417,
-      "line_count": 103,
+      "sha256": "e2b2c83faab60f36ee8ac07fc9b4d81dad4c54d57d019655a14d658a6474a37e",
+      "bytes": 14781,
+      "line_count": 130,
       "sections": [
         {
           "line": 1,
@@ -499,27 +602,85 @@
         {
           "line": 52,
           "level": 3,
+          "title": "局域掺杂和金属接触的交叉验证"
+        },
+        {
+          "line": 60,
+          "level": 3,
+          "title": "掺杂剖面、膜厚与硅片隐裂"
+        },
+        {
+          "line": 68,
+          "level": 3,
+          "title": "膜色测厚的标定与边缘结果复判"
+        },
+        {
+          "line": 75,
+          "level": 3,
+          "title": "背光位姿识别与镀膜位置对齐"
+        },
+        {
+          "line": 79,
+          "level": 3,
           "title": "短路电流密度的光谱积分"
         },
         {
-          "line": 67,
+          "line": 94,
           "level": 2,
           "title": "3. 质量数据关联方式"
         },
         {
-          "line": 78,
+          "line": 105,
           "level": 2,
           "title": "4. 材料与工艺适配"
         },
         {
-          "line": 90,
+          "line": 117,
           "level": 2,
           "title": "5. 需要保留的原文问题"
         },
         {
-          "line": 101,
+          "line": 128,
           "level": 2,
           "title": "6. 现场知识补充入口"
+        }
+      ],
+      "evidence": "curated_guidance",
+      "source_status": null
+    },
+    {
+      "id": "references/README.md",
+      "path": "references/README.md",
+      "category": "references",
+      "title": "知识库资料目录",
+      "sha256": "b57ec6207edba6a21ee6651cd1c078ac0c6a1ca48310eea9a3a940a22db769c9",
+      "bytes": 5664,
+      "line_count": 53,
+      "sections": [
+        {
+          "line": 1,
+          "level": 1,
+          "title": "知识库资料目录"
+        },
+        {
+          "line": 5,
+          "level": 2,
+          "title": "期刊与会议资料"
+        },
+        {
+          "line": 19,
+          "level": 2,
+          "title": "专利正文专题"
+        },
+        {
+          "line": 36,
+          "level": 2,
+          "title": "专利逐项著录目录"
+        },
+        {
+          "line": 47,
+          "level": 2,
+          "title": "图书、标准与工艺参考"
         }
       ],
       "evidence": "curated_guidance",
@@ -2182,6 +2343,118 @@
       ],
       "evidence": "source_snapshot",
       "source_status": "present"
+    },
+    {
+      "id": "references/laplace-public/README.md",
+      "path": "references/laplace-public/README.md",
+      "category": "references",
+      "title": "拉普拉斯股份公开研究与专利来源",
+      "sha256": "a49e28190f7448b5cbca4f6ab3c828db48b263bda4ce04c5bac8a5e60449d224",
+      "bytes": 15598,
+      "line_count": 95,
+      "sections": [
+        {
+          "line": 1,
+          "level": 1,
+          "title": "拉普拉斯股份公开研究与专利来源"
+        },
+        {
+          "line": 5,
+          "level": 2,
+          "title": "按技术问题阅读专利正文整理"
+        },
+        {
+          "line": 18,
+          "level": 2,
+          "title": "专利目录与覆盖范围"
+        },
+        {
+          "line": 32,
+          "level": 2,
+          "title": "机构归属与取证范围"
+        },
+        {
+          "line": 38,
+          "level": 2,
+          "title": "期刊论文"
+        },
+        {
+          "line": 48,
+          "level": 2,
+          "title": "会议摘要与报告"
+        },
+        {
+          "line": 53,
+          "level": 2,
+          "title": "专利公开文本"
+        },
+        {
+          "line": 72,
+          "level": 3,
+          "title": "PCT 与境外公开文本"
+        },
+        {
+          "line": 90,
+          "level": 2,
+          "title": "公司披露与本地原件"
+        }
+      ],
+      "evidence": "curated_guidance",
+      "source_status": null
+    },
+    {
+      "id": "references/laplace-public/downloads.md",
+      "path": "references/laplace-public/downloads.md",
+      "category": "references",
+      "title": "拉普拉斯公开资料下载清单",
+      "sha256": "d6969d647873e04498b14688ebd1ef1d6e564af1a870cba66e62d05fcdb0dee8",
+      "bytes": 5679,
+      "line_count": 32,
+      "sections": [
+        {
+          "line": 1,
+          "level": 1,
+          "title": "拉普拉斯公开资料下载清单"
+        }
+      ],
+      "evidence": "curated_guidance",
+      "source_status": null
+    },
+    {
+      "id": "references/laplace-public/prospectus-patents-2024-final.json",
+      "path": "references/laplace-public/prospectus-patents-2024-final.json",
+      "category": "references",
+      "title": "prospectus-patents-2024-final",
+      "sha256": "2dc8ea5f053200921197664cde070e065608f53a2ec5094082a0dfe6f826f08d",
+      "bytes": 239977,
+      "line_count": 7719,
+      "sections": [],
+      "evidence": "curated_guidance",
+      "source_status": null
+    },
+    {
+      "id": "references/laplace-public/prospectus-patents-2024.json",
+      "path": "references/laplace-public/prospectus-patents-2024.json",
+      "category": "references",
+      "title": "prospectus-patents-2024",
+      "sha256": "6c3fffeb9cc51f6cd963f61eb579e9c971d33f689d131dd76af4ccbbc1783b50",
+      "bytes": 193938,
+      "line_count": 6240,
+      "sections": [],
+      "evidence": "curated_guidance",
+      "source_status": null
+    },
+    {
+      "id": "references/laplace-public/publications-expanded-cn.json",
+      "path": "references/laplace-public/publications-expanded-cn.json",
+      "category": "references",
+      "title": "publications-expanded-cn",
+      "sha256": "b854f95cc02e51cc5c34cc519b3a56d6fd60f136096dddff83d8f5951e08e8d1",
+      "bytes": 83264,
+      "line_count": 1829,
+      "sections": [],
+      "evidence": "curated_guidance",
+      "source_status": null
     },
     {
       "id": "references/photovoltaics/README.md",

@@ -6,7 +6,7 @@
 
 ## 按知识体系查阅
 
-从[光伏知识体系](knowledge/pv-knowledge-map.md)进入，沿材料与界面、电池结构、制造与设备、测试与诊断、组件与产业化、系统与运维查找。体系图提供 TOPCon 批次追溯、电性能排查和钙钛矿叠层放大的跨主题入口。
+从 [KD 知识体系树](knowledge/knowledge-tree.md)查看全部主题、工作方法和证据入口。按 TOPCon 批次追溯、电性能排查等具体问题查阅时，可用[光伏知识体系导读](knowledge/pv-knowledge-map.md)。论文、专利和图书的收录范围见[知识库资料目录](references/README.md)。
 
 ## 常用入口
 
