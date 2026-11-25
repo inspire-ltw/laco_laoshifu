@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import hashlib
 import json
 import os
 from pathlib import Path, PurePosixPath
 import re
+import shutil
 import stat
 import subprocess
 import sys
@@ -180,8 +182,11 @@ def read_archive(archive: Path) -> tuple[dict, dict[str, bytes]]:
     if manifest_data is None:
         raise ValueError(f"Archive is missing {MANIFEST_NAME}")
     manifest = json.loads(manifest_data.decode("utf-8"))
+    version = manifest.get("version")
     if (not isinstance(manifest, dict) or manifest.get("schema_version") != 1
-            or manifest.get("name") != SKILL_NAME or manifest.get("version") != VERSION):
+            or manifest.get("name") != SKILL_NAME
+            or not isinstance(version, str)
+            or not re.fullmatch(r"\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?", version)):
         raise ValueError("Unrecognized bundle manifest identity or version")
     records = manifest.get("files")
     if not isinstance(records, list):
@@ -247,19 +252,51 @@ def build_archive(output: Path, *, repo_root: Path = REPO_ROOT, force=False) -> 
     return archive
 
 
-def install_archive(archive: Path, skills_dir: Path, *, dry_run=False) -> Path:
+def collect_unmanaged_files(target: Path) -> dict[str, bytes]:
+    """Collect user-added files in an existing installation that are not managed by its manifest."""
+    managed = {MANIFEST_NAME}
+    manifest_path = target / MANIFEST_NAME
+    if manifest_path.is_file() and not is_link(manifest_path):
+        try:
+            old_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            for record in old_manifest.get("files", []):
+                if isinstance(record, dict) and isinstance(record.get("path"), str):
+                    managed.add(record["path"])
+        except (OSError, ValueError):
+            pass
+    preserved: dict[str, bytes] = {}
+    for current, dirs, files in os.walk(target, followlinks=False):
+        parent = Path(current)
+        dirs[:] = sorted(name for name in dirs if name != "__pycache__" and not is_link(parent / name))
+        for name in sorted(files):
+            path = parent / name
+            if path.suffix in {".pyc", ".pyo"} or is_link(path) or not path.is_file():
+                continue
+            rel = path.relative_to(target).as_posix()
+            if rel not in managed:
+                preserved[rel] = path.read_bytes()
+    return preserved
+
+
+def install_archive(archive: Path, skills_dir: Path, *, dry_run=False,
+                    upgrade=False, keep_backup=False) -> Path:
     manifest, payload = read_archive(Path(archive))
     skills_dir = Path(skills_dir).expanduser().resolve()
     target = skills_dir / SKILL_NAME
-    if target.exists() or target.is_symlink():
-        raise FileExistsError(f"Skill already exists; choose a clean skills directory: {target}")
+    exists = target.exists() or target.is_symlink()
+    if exists:
+        if not upgrade:
+            raise FileExistsError(f"Skill already exists; use --upgrade or choose a clean skills directory: {target}")
+        if is_link(target) or not target.is_dir():
+            raise ValueError(f"Refusing to upgrade non-directory or linked target: {target}")
     if dry_run:
         return target
+    preserved = collect_unmanaged_files(target) if exists else {}
     skills_dir.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".lapdex-install-", dir=skills_dir) as temporary:
         stage = Path(temporary) / SKILL_NAME
         stage.mkdir()
-        all_files = {**payload, MANIFEST_NAME: json.dumps(
+        all_files = {**preserved, **payload, MANIFEST_NAME: json.dumps(
             manifest, ensure_ascii=False, indent=2).encode("utf-8") + b"\n"}
         for relative, data in all_files.items():
             destination = stage / relative
@@ -267,10 +304,27 @@ def install_archive(archive: Path, skills_dir: Path, *, dry_run=False) -> Path:
                 raise ValueError(f"Install path escapes staging directory: {relative}")
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes(data)
-        if target.exists() or target.is_symlink():
-            raise FileExistsError(f"Skill appeared during install: {target}")
-        # Same-parent staging avoids cross-volume moves and partial installations.
-        stage.rename(target)
+        if exists:
+            ts = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
+            backup = skills_dir / f".{SKILL_NAME}.bak-{ts}"
+            suffix = 1
+            while backup.exists():
+                backup = skills_dir / f".{SKILL_NAME}.bak-{ts}-{suffix}"
+                suffix += 1
+            target.rename(backup)
+            try:
+                stage.rename(target)
+            except Exception:
+                if backup.exists() and not target.exists():
+                    backup.rename(target)
+                raise
+            if not keep_backup:
+                shutil.rmtree(backup, ignore_errors=True)
+        else:
+            if target.exists() or target.is_symlink():
+                raise FileExistsError(f"Skill appeared during install: {target}")
+            # Same-parent staging avoids cross-volume moves and partial installations.
+            stage.rename(target)
     return target
 
 
@@ -284,20 +338,31 @@ def main(argv=None) -> int:
     parser.add_argument("--skills-dir", type=Path,
                         help="Lapdex skills directory (default: ~/.lapdex/skills)")
     parser.add_argument("--dry-run", action="store_true", help="validate installation without writing")
+    parser.add_argument("--upgrade", action="store_true",
+                        help="in-place atomic upgrade preserving unmanaged user files")
+    parser.add_argument("--keep-backup", action="store_true",
+                        help="retain pre-upgrade backup directory alongside skills-dir")
     args = parser.parse_args(argv)
     if (args.check or args.install) and (args.output or args.force):
         parser.error("--output and --force apply only when building")
-    if not args.install and (args.skills_dir or args.dry_run):
-        parser.error("--skills-dir and --dry-run require --install")
+    if not args.install and (args.skills_dir or args.dry_run or args.upgrade or args.keep_backup):
+        parser.error("--skills-dir, --dry-run, --upgrade, and --keep-backup require --install")
+    if args.keep_backup and not args.upgrade:
+        parser.error("--keep-backup requires --upgrade")
     try:
         if args.check:
             manifest, payload = read_archive(args.check)
             print(f"Verified {manifest['name']} {manifest['version']}: "
                   f"{len(payload)} payload files; original snapshot checksums match.")
         elif args.install:
-            target = install_archive(args.install, args.skills_dir or Path.home() / ".lapdex" / "skills",
-                                     dry_run=args.dry_run)
-            print(f"{'Would install' if args.dry_run else 'Installed'}: {target}")
+            skills_dir = args.skills_dir or Path.home() / ".lapdex" / "skills"
+            existed = (skills_dir.expanduser().resolve() / SKILL_NAME).exists()
+            target = install_archive(args.install, skills_dir,
+                                     dry_run=args.dry_run, upgrade=args.upgrade,
+                                     keep_backup=args.keep_backup)
+            verb = ("Would upgrade" if existed else "Would install") if args.dry_run else (
+                "Upgraded" if existed else "Installed")
+            print(f"{verb}: {target}")
         else:
             archive = build_archive(args.output or REPO_ROOT / "dist", force=args.force)
             print(f"Built: {archive}")

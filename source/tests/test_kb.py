@@ -349,6 +349,32 @@ class KnowledgeBaseTests(unittest.TestCase):
         self.assertEqual(output['disambiguation']['status'], 'ambiguous')
         self.assertEqual(len(output['disambiguation']['candidates']), 2)
 
+    def test_search_preserves_markdown_table_header_for_deep_rows(self):
+        rows = ['| 参数 | 典型范围 | 备注 |', '|---|---|---|']
+        rows.extend(f'| 常规项{i} | {i} Pa | 占位 |' for i in range(1, 20))
+        rows.append('| 集成氧化压力 | 110 Torr | 特殊工步 |')
+        (self.upstream / '01.md').write_text('# 工艺参数\n\n' + '\n'.join(rows) + '\n', encoding='utf-8')
+        self.quiet(kb.snapshot, self.root, self.upstream, True)
+        self.quiet(kb.index, self.root)
+        hit = kb.search(self.root, '集成氧化压力 110 Torr', 'references', 1)[0]
+        self.assertIn('| 参数 | 典型范围 | 备注 |', hit['excerpt'])
+        self.assertIn('|---|---|---|', hit['excerpt'])
+        self.assertIn('110 Torr', hit['excerpt'])
+
+    def test_batch_abbr_cli_returns_all_queries_in_single_process(self):
+        self.concept_fixture()
+        done = subprocess.run([sys.executable, str(SCRIPT), '--root', str(self.root),
+                               'abbr', 'BK', 'PE', 'UNKNOWN-X', '--json'],
+                              cwd=self.base, capture_output=True, encoding='utf-8')
+        self.assertEqual(done.returncode, 0, done.stderr)
+        output = json.loads(done.stdout)
+        self.assertEqual(output['queries'], ['BK', 'PE', 'UNKNOWN-X'])
+        self.assertEqual(output['count'], 3)
+        by_query = {item['query']: item for item in output['items']}
+        self.assertEqual(by_query['BK']['results'][0]['term'], '硼扩散')
+        self.assertEqual(by_query['PE']['results'][0]['term'], 'PECVD')
+        self.assertEqual(by_query['UNKNOWN-X']['disambiguation']['status'], 'not_found')
+
 
 if __name__ == '__main__':
     unittest.main()

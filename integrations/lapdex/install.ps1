@@ -13,8 +13,8 @@ try {
     $queryFile = [IO.Path]::GetTempFileName()
     try {
         $prompt = @"
-安装当前工作目录「.」下的 skill。
-请将该完整目录作为 laco-laoshifu 安装到当前 Lapdex profile 的用户技能目录，保留 SKILL.md 和 references 的相对位置。若已有同名安装，请停止并报告路径，以便用户备份。安装后检查目标的 SKILL.md 和 references/kd/source/README.md，并报告实际结果和目标路径。
+安装或平滑升级当前工作目录「.」下的 skill。
+请将该完整目录作为 laco-laoshifu 安装到当前 Lapdex profile 的用户技能目录，保留 SKILL.md 和 references 的相对位置。若已有同名安装，请先备份旧目录、保留用户新增的非托管文件并平滑升级，切勿改动用户目录下的 ~/.laco-laoshifu/private-memory/ 私有记忆。安装或升级后检查目标的 SKILL.md 和 references/kd/source/README.md，并报告实际结果和目标路径。
 "@
         [IO.File]::WriteAllText($queryFile, $prompt, [Text.UTF8Encoding]::new($false))
         Push-Location -LiteralPath $PSScriptRoot

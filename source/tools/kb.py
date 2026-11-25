@@ -133,14 +133,14 @@ def snapshot(root: Path, source: Path, update: bool = False):
         shutil.copy2(path, target)
         rel = target.relative_to(root).as_posix()
         seen.add(rel)
-        records[rel] = {"path": rel, "source_name": path.name, "sha256": sha256(target),
+        records[rel] = {"path": rel, "origin_path": str(path), "sha256": sha256(target),
                         "bytes": target.stat().st_size, "source_status": "present",
                         "imported_at_utc": imported,
                         "source_modified_at_utc": datetime.fromtimestamp(
                             path.stat().st_mtime, timezone.utc).isoformat(timespec="seconds")}
     for rel in records.keys() - seen:
         records[rel]["source_status"] = "not_in_latest_import"
-    write_json(old_path, {"schema_version": 1, "source_label": "External reference collection",
+    write_json(old_path, {"schema_version": 1, "source_root": str(source),
                          "last_imported_at_utc": imported,
                          "files": [records[key] for key in sorted(records)]})
     print(f"已复制 {len(files)} 份原文；保留 {len(records) - len(seen)} 份历史原文。请运行 index 和 verify。")
@@ -227,16 +227,18 @@ def abbreviation_errors(glossary: dict):
     return errors
 
 
-def abbreviations(root: Path, query: str = "", category: str | None = None, limit: int = 200):
+def abbreviations(root: Path, query: str = "", category: str | None = None, limit: int = 200, *,
+                  glossary: dict | None = None):
     """Read the single glossary directly, even if the document catalog is unavailable."""
     if not 1 <= limit <= 200:
         raise ValueError("limit 必须在 1 到 200 之间。")
     if category is not None and category not in ABBREVIATION_CATEGORIES:
         raise ValueError(f"未知缩写分类: {category}")
-    glossary = read_json(root / "glossary.json")
-    errors = abbreviation_errors(glossary)
-    if errors:
-        raise ValueError("\n".join(errors))
+    if glossary is None:
+        glossary = read_json(root / "glossary.json")
+        errors = abbreviation_errors(glossary)
+        if errors:
+            raise ValueError("\n".join(errors))
     terms = [dict(term) for term in glossary["terms"] if (term.get("abbreviation") or term.get("short_names"))
              and (category is None or term.get("category") == category)]
     query = phrase_key(query)
@@ -268,14 +270,14 @@ def abbreviations(root: Path, query: str = "", category: str | None = None, limi
     return sorted(terms, key=rank)[:limit]
 
 
-def name_disambiguation(root: Path, query: str = ""):
+def name_disambiguation(root: Path, query: str = "", *, glossary: dict | None = None):
     """Report lexical candidates; semantic choice belongs to context review."""
     result = {"status": "not_applicable", "requires_context_review": False,
               "next_action": "清单浏览不代表任何名称已在当前任务中消歧。", "candidates": []}
     if not phrase_key(query):
         return result
     # Do not let display limits or category filters hide a competing meaning.
-    hits = abbreviations(root, query, limit=200)
+    hits = abbreviations(root, query, limit=200, glossary=glossary)
     exact = [term for term in hits if any(abbreviation_key(name) == abbreviation_key(query)
                                         for name in lookup_names(term))]
     candidates = exact or hits
@@ -396,6 +398,52 @@ def query_terms(root: Path, query: str):
     return list(dict.fromkeys(primary)), sorted(aliases - set(primary)), sorted(grams)
 
 
+def is_table_sep(line: str) -> bool:
+    stripped = line.strip()
+    if "|" not in stripped or "-" not in stripped:
+        return False
+    return stripped.replace("|", "").replace(":", "").replace("-", "").strip() == ""
+
+
+def is_table_line(line: str) -> bool:
+    stripped = line.strip()
+    return bool(stripped) and "|" in stripped and (stripped.startswith("|") or stripped.endswith("|"))
+
+
+def extract_snippet(doc_lines: list[str], chunk_start: int, chunk_end: int, hit_offset: int,
+                    max_chars: int = 1100) -> str:
+    abs_hit = chunk_start + hit_offset
+    win_start = max(chunk_start, abs_hit - 1)
+    win_end = min(chunk_end, abs_hit + 7)
+    window = doc_lines[win_start:win_end]
+
+    first_table_rel = next((i for i, line in enumerate(window) if is_table_line(line)), None)
+    if first_table_rel is not None:
+        has_header = any(
+            is_table_sep(window[i + 1]) and "|" in window[i]
+            for i in range(len(window) - 1)
+        )
+        if not has_header:
+            idx = win_start + first_table_rel
+            header_pair = None
+            while idx >= 0 and is_table_line(doc_lines[idx]):
+                if is_table_sep(doc_lines[idx]) and idx > 0 and is_table_line(doc_lines[idx - 1]):
+                    header_pair = (idx - 1, idx)
+                    break
+                idx -= 1
+            if header_pair is not None and header_pair[0] < win_start:
+                prefix = ([doc_lines[header_pair[0]]] if header_pair[1] == win_start
+                          else [doc_lines[header_pair[0]], doc_lines[header_pair[1]]])
+                header_text = "\n".join(prefix)
+                body_text = "\n".join(window)
+                combined = header_text + "\n" + body_text
+                if len(combined) <= max_chars:
+                    return combined
+                remaining = max(0, max_chars - len(header_text) - 1)
+                return header_text + "\n" + body_text[:remaining]
+    return "\n".join(window)[:max_chars]
+
+
 def chunks(text: str):
     lines = text.splitlines()
     sections = headings(text)
@@ -429,6 +477,7 @@ def search(root: Path, query: str, category: str | None = None, limit: int = 5):
         if not path.exists() or sha256(path) != doc["sha256"]:
             raise ValueError(f"目录索引已过期: {doc['path']}；请运行 index。")
         text = path.read_text(encoding="utf-8-sig")
+        doc_lines = text.splitlines()
         for start, end, title, content in chunks(text):
             body, heading = normalize(content), normalize(title)
             exact = [term for term in primary if contains(body, term)]
@@ -445,7 +494,7 @@ def search(root: Path, query: str, category: str | None = None, limit: int = 5):
             lines = content.splitlines()
             hit = next((i for i, line in enumerate(lines)
                         if any(contains(normalize(line), term) for term in matches)), 0)
-            snippet = "\n".join(lines[max(0, hit - 1):hit + 7])[:1100]
+            snippet = extract_snippet(doc_lines, start - 1, end, hit)
             result.append({"path": doc["path"], "title": doc["title"], "section": title,
                            "line_start": start, "line_end": end, "score": score,
                            "evidence": doc["evidence"], "source_status": doc["source_status"],
@@ -527,8 +576,8 @@ def main(argv=None):
     cmd.add_argument("--category", choices=CATEGORIES)
     cmd.add_argument("--limit", type=int, default=5)
     cmd.add_argument("--json", action="store_true")
-    cmd = sub.add_parser("abbr", help="按概念查询多个中文简称、英文缩写、数据集代号及其范围与证据")
-    cmd.add_argument("query", nargs="?", default="")
+    cmd = sub.add_parser("abbr", help="按概念查询一个或多个中文简称、英文缩写、数据集代号及其范围与证据")
+    cmd.add_argument("query", nargs="*", help="一个或多个查询词；省略则列出全部清单")
     cmd.add_argument("--category", choices=ABBREVIATION_CATEGORIES)
     cmd.add_argument("--limit", type=int, default=200, help="最多返回1..200个概念，默认200")
     cmd.add_argument("--json", action="store_true")
@@ -547,41 +596,74 @@ def main(argv=None):
         elif args.command == "crosswalk":
             crosswalk(root, args.check)
         elif args.command == "abbr":
-            terms = abbreviations(root, args.query, args.category, args.limit)
-            disambiguation = name_disambiguation(root, args.query)
-            if args.json:
-                print(json.dumps({"query": args.query, "category": args.category,
-                                  "count": len(terms), "results": terms,
-                                  "disambiguation": disambiguation}, ensure_ascii=False, indent=2))
-            elif not terms:
-                print("当前查询/分类过滤下未找到名称映射；可换全称或取消分类过滤。")
-                print(disambiguation["next_action"])
+            queries = args.query or [""]
+            if len(queries) > 1:
+                glossary = read_json(root / "glossary.json")
+                errors = abbreviation_errors(glossary)
+                if errors:
+                    raise ValueError("\n".join(errors))
+                items = []
+                for q in queries:
+                    terms = abbreviations(root, q, args.category, args.limit, glossary=glossary)
+                    disambiguation = name_disambiguation(root, q, glossary=glossary)
+                    items.append({"query": q, "count": len(terms), "results": terms,
+                                  "disambiguation": disambiguation})
+                if args.json:
+                    print(json.dumps({"queries": queries, "category": args.category,
+                                      "count": len(items), "items": items}, ensure_ascii=False, indent=2))
+                else:
+                    not_found = []
+                    for item in items:
+                        q, terms, disambiguation = item["query"], item["results"], item["disambiguation"]
+                        print(f"=== 查询: {q} ({disambiguation['status']}) ===")
+                        if not terms:
+                            not_found.append(q)
+                            print("未找到名称映射。" + disambiguation["next_action"])
+                        else:
+                            print(disambiguation["next_action"])
+                            for term in terms:
+                                short_str = "、".join(r["name"] for r in term.get("short_names", []))
+                                print(f"  - {term['term']} | 英文: {term.get('abbreviation', '—')} | 简称: {short_str or '—'}")
+                        print()
+                    if not_found:
+                        print("未收录词汇总: " + "、".join(not_found) + "（可汇总询问用户是否录入知识库）")
             else:
-                if args.query:
-                    print(f"上下文消歧: {disambiguation['status']}")
+                q = queries[0]
+                terms = abbreviations(root, q, args.category, args.limit)
+                disambiguation = name_disambiguation(root, q)
+                if args.json:
+                    print(json.dumps({"query": q, "category": args.category,
+                                      "count": len(terms), "results": terms,
+                                      "disambiguation": disambiguation}, ensure_ascii=False, indent=2))
+                elif not terms:
+                    print("当前查询/分类过滤下未找到名称映射；可换全称或取消分类过滤。")
                     print(disambiguation["next_action"])
-                    if disambiguation.get("confirmation_prompt"):
-                        print("上下文仍不足时的提问示例: " + disambiguation["confirmation_prompt"])
-                print(f"简称/缩写对照: {len(terms)} 个概念")
-                for term in terms:
-                    print(f"\n概念: {term['term']} | 中文: {term.get('chinese_full_name', term['term'])}")
-                    if term.get("abbreviation"):
-                        print(f"标准英文缩写/符号: {term['abbreviation']}")
-                    if term.get("english_full_name"):
-                        print(f"英文名称: {term['english_full_name']}")
-                        basis = "原文明确展开" if term.get("full_name_status") == "source_explicit" else "整理补充的全称/译名"
-                        print(f"英文名称依据: {basis}")
-                    print(f"分类: {ABBREVIATION_CATEGORIES.get(term.get('category'), '未分类')} | 用途: {term.get('usage', '见含义和适用范围')}")
-                    print(f"含义: {term.get('meaning', '')}")
-                    for record in term.get("short_names", []):
-                        note = "" if active_short_name(record) else "；不自动展开"
-                        print(f"简称: {record['name']}（{NAME_KINDS[record['kind']]}；{NAME_STATUSES[record['status']]}{note}）")
-                        print(f"  范围: {record['scope']}")
-                        print("  证据: " + ", ".join(record["sources"]))
-                    if term.get("notes"):
-                        print(f"注意: {term['notes']}")
-                    print(f"知识状态: {term.get('status', 'unknown')}")
-                    print("出处: " + ", ".join(term.get("sources", [])))
+                else:
+                    if q:
+                        print(f"上下文消歧: {disambiguation['status']}")
+                        print(disambiguation["next_action"])
+                        if disambiguation.get("confirmation_prompt"):
+                            print("上下文仍不足时的提问示例: " + disambiguation["confirmation_prompt"])
+                    print(f"简称/缩写对照: {len(terms)} 个概念")
+                    for term in terms:
+                        print(f"\n概念: {term['term']} | 中文: {term.get('chinese_full_name', term['term'])}")
+                        if term.get("abbreviation"):
+                            print(f"标准英文缩写/符号: {term['abbreviation']}")
+                        if term.get("english_full_name"):
+                            print(f"英文名称: {term['english_full_name']}")
+                            basis = "原文明确展开" if term.get("full_name_status") == "source_explicit" else "整理补充的全称/译名"
+                            print(f"英文名称依据: {basis}")
+                        print(f"分类: {ABBREVIATION_CATEGORIES.get(term.get('category'), '未分类')} | 用途: {term.get('usage', '见含义和适用范围')}")
+                        print(f"含义: {term.get('meaning', '')}")
+                        for record in term.get("short_names", []):
+                            note = "" if active_short_name(record) else "；不自动展开"
+                            print(f"简称: {record['name']}（{NAME_KINDS[record['kind']]}；{NAME_STATUSES[record['status']]}{note}）")
+                            print(f"  范围: {record['scope']}")
+                            print("  证据: " + ", ".join(record["sources"]))
+                        if term.get("notes"):
+                            print(f"注意: {term['notes']}")
+                        print(f"知识状态: {term.get('status', 'unknown')}")
+                        print("出处: " + ", ".join(term.get("sources", [])))
         else:
             hits = search(root, args.query, args.category, args.limit)
             if args.json:

@@ -6,9 +6,9 @@
       "path": "README.md",
       "category": "knowledge",
       "title": "KD 工作知识库",
-      "sha256": "a914b70624a6ce1390d21417b960e50a1c76915e9cccef0259a2affc97acd445",
-      "bytes": 13184,
-      "line_count": 133,
+      "sha256": "40660dc3e0f30dbe0036b605ab4219c422efb1bba067d0494c21301363c6ecbe",
+      "bytes": 2866,
+      "line_count": 34,
       "sections": [
         {
           "line": 1,
@@ -16,39 +16,19 @@
           "title": "KD 工作知识库"
         },
         {
-          "line": 7,
+          "line": 5,
           "level": 2,
-          "title": "按知识体系查阅"
+          "title": "按主题查阅"
         },
         {
-          "line": 11,
-          "level": 2,
-          "title": "常用入口"
-        },
-        {
-          "line": 33,
+          "line": 20,
           "level": 2,
           "title": "资料层次与可信范围"
         },
         {
-          "line": 49,
+          "line": 26,
           "level": 2,
-          "title": "检索与校验"
-        },
-        {
-          "line": 73,
-          "level": 2,
-          "title": "常用简称、缩写与数据集代号"
-        },
-        {
-          "line": 106,
-          "level": 2,
-          "title": "使用 skills"
-        },
-        {
-          "line": 121,
-          "level": 2,
-          "title": "更新资料"
+          "title": "常用命令（完整说明见 [CLI 命令参考](workflows/kb-cli-reference.md)）"
         }
       ],
       "evidence": "curated_guidance",
@@ -2692,6 +2672,39 @@
           "line": 37,
           "level": 2,
           "title": "根据任务形成交付"
+        }
+      ],
+      "evidence": "curated_guidance",
+      "source_status": null
+    },
+    {
+      "id": "workflows/kb-cli-reference.md",
+      "path": "workflows/kb-cli-reference.md",
+      "category": "workflows",
+      "title": "`kb.py` 检索、简称与维护命令参考",
+      "sha256": "eda7f26c471b0503b55e83fc60002fa39f1aeed0a224003afc04d66a8fd7cff4",
+      "bytes": 2433,
+      "line_count": 45,
+      "sections": [
+        {
+          "line": 1,
+          "level": 1,
+          "title": "`kb.py` 检索、简称与维护命令参考"
+        },
+        {
+          "line": 5,
+          "level": 2,
+          "title": "常用检索与校验命令"
+        },
+        {
+          "line": 26,
+          "level": 2,
+          "title": "检索与简称规则说明"
+        },
+        {
+          "line": 32,
+          "level": 2,
+          "title": "更新快照与维护索引"
         }
       ],
       "evidence": "curated_guidance",

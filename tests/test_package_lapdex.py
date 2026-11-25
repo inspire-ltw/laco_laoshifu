@@ -160,6 +160,29 @@ class PackagingTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Original snapshot"):
             package.read_archive(changed)
 
+    def test_upgrade_replaces_managed_files_and_preserves_user_files(self):
+        archive = self.build()
+        skills_dir = self.temp / "skills"
+        installed = package.install_archive(archive, skills_dir)
+        user_note = installed / "user-overrides" / "custom-template.txt"
+        user_note.parent.mkdir(parents=True, exist_ok=True)
+        user_note.write_text("keep-me", encoding="utf-8")
+        (installed / "SKILL.md").write_text("outdated", encoding="utf-8")
+
+        planned = package.install_archive(archive, skills_dir, dry_run=True, upgrade=True)
+        self.assertEqual(planned, installed)
+        self.assertEqual((installed / "SKILL.md").read_text(encoding="utf-8"), "outdated")
+
+        res = subprocess.run(
+            [sys.executable, "-B", str(ROOT / "scripts" / "package_lapdex.py"),
+             "--install", str(archive), "--skills-dir", str(skills_dir), "--upgrade"],
+            capture_output=True, text=True, check=True,
+        )
+        self.assertIn("Upgraded:", res.stdout)
+        self.assertNotEqual((installed / "SKILL.md").read_text(encoding="utf-8"), "outdated")
+        self.assertEqual(user_note.read_text(encoding="utf-8"), "keep-me")
+        self.assertEqual([p.name for p in skills_dir.iterdir()], [package.SKILL_NAME])
+
 
 if __name__ == "__main__":
     unittest.main()
